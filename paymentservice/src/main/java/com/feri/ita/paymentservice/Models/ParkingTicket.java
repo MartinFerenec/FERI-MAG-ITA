@@ -1,7 +1,9 @@
 package com.feri.ita.paymentservice.Models;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,13 +17,15 @@ public class ParkingTicket {
     private String licensePlate;
 
     @Column
-    private Date entryTimestamp;
+    private LocalDateTime entryTimestamp;
 
     @Column
-    private Date paidTimestamp;
+    @Nullable
+    private LocalDateTime paidTimestamp;
 
     @Column
-    private Date leavingTimestamp;
+    @Nullable
+    private LocalDateTime leavingTimestamp;
 
     public long getId() {
         return id;
@@ -35,28 +39,33 @@ public class ParkingTicket {
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
-    public Date getEntryTimestamp() {
+    public LocalDateTime getEntryTimestamp() {
         return entryTimestamp;
     }
-    public void setEntryTimestamp(Date entryTimestamp) {
+    public void setEntryTimestamp(LocalDateTime entryTimestamp) {
         this.entryTimestamp = entryTimestamp;
     }
-    public Date getPaidTimestamp() {
+    public @Nullable LocalDateTime getPaidTimestamp() {
         return paidTimestamp;
     }
-    public void setPaidTimestamp(Date paidTimestamp) {
+    public void setPaidTimestamp(LocalDateTime paidTimestamp) {
         this.paidTimestamp = paidTimestamp;
     }
-    public Date getLeavingTimestamp() {
+    public @Nullable LocalDateTime getLeavingTimestamp() {
         return leavingTimestamp;
     }
-    public void setLeavingTimestamp(Date leavingTimestamp) {
+    public void setLeavingTimestamp(LocalDateTime leavingTimestamp) {
         this.leavingTimestamp = leavingTimestamp;
+    }
+
+    public ParkingTicket() {
+        super();
     }
 
     public ParkingTicket(
         String licensePlate,
-        Date entryTimestamp) {
+        LocalDateTime entryTimestamp) {
+        this();
         this.licensePlate = licensePlate;
         this.entryTimestamp = entryTimestamp;
     }
