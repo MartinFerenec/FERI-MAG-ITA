@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven and MySQL
+name: Java CI with Maven
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
           env:
             MYSQL_ROOT_PASSWORD: nekiJakiPassword-123
           ports:
-          - 3306:3306
+            - 3306:3306
           options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
     - uses: actions/checkout@v3
@@ -31,14 +31,6 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: 17
-        
-    - name: Cache the Maven packages to speed up build
-      uses: actions/cache@v1
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2      
-
     - name: Build and test project with Maven
       run: mvn -B package --file pom.xml
 
