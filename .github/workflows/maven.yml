@@ -28,7 +28,9 @@ jobs:
     steps:
     - name: Build and test Java with Maven
       run: |
+        mkdir paymentservice
         cd paymentservice
+        git pull https://github.com/MartinFerenec/FERI-MAG-ITA.git .
         sudo apt install openjdk-17-jdk openjdk-17-jre
         sudo apt-get -y install maven
         mvn -B package --file pom.xml
