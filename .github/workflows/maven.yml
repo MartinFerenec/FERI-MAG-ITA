@@ -6,34 +6,43 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java CI with Maven and MySQL
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ master ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ master ]
 
 jobs:
-  build-paymentservice:
+  build_and_test:
     runs-on: ubuntu-latest
+
     services:
       mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: nekiJakiPassword-123
-        ports:
-        - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+          image: mysql:5.7
+          env:
+            MYSQL_ROOT_PASSWORD: nekiJakiPassword-123
+          ports:
+          - 3306:3306
+          options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+            
     steps:
-    - name: Build and test Java with Maven
-      run: |
-        mkdir paymentservice
-        cd paymentservice
-        git pull https://github.com/MartinFerenec/FERI-MAG-ITA.git .
-        sudo apt install openjdk-17-jdk openjdk-17-jre
-        sudo apt-get -y install maven
-        mvn -B package --file pom.xml
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+
+    - name: Cache the Maven packages to speed up build
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2      
+
+    - name: Build and test project with Maven
+      run: mvn -B package --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
