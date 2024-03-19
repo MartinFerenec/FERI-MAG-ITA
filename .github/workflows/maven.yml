@@ -22,7 +22,9 @@ jobs:
       mysql:
           image: mysql:5.7
           env:
+            TZ: UTC
             MYSQL_ROOT_PASSWORD: nekiJakiPassword-123
+            MYSQL_DATABASE: paymentServiceDb
           ports:
           - 3306:3306
           options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
