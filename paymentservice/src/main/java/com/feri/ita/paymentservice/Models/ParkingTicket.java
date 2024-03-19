@@ -1,7 +1,6 @@
 package com.feri.ita.paymentservice.Models;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.*;
