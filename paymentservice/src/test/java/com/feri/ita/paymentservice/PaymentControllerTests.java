@@ -86,9 +86,4 @@ public class PaymentControllerTests {
         mockMvc.perform(get("/isTicketPaid/1"))
             .andExpect(status().isNotFound());
     }
-
-    @Test
-    public void dummyPipelineTestThatFails() throws Exception{
-        Assert.assertEquals(1, 2);
-    }
 }
