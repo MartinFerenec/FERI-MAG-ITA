@@ -1,6 +1,5 @@
 package com.feri.ita.paymentservice;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feri.ita.paymentservice.Controllers.PaymentController;
 import com.feri.ita.paymentservice.Models.ParkingTicket;
 import com.feri.ita.paymentservice.Models.ParkingTicketStatus;
