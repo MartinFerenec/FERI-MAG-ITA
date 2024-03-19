@@ -27,6 +27,13 @@ public class PaymentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/getPrePaymentInformation/{id}")
+    public ResponseEntity<ParkingTicketStatus> getPrePaymentInformation(@PathVariable long id){
+        return paymentService.getPrePaymentInformation(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
+    }
+
     @PatchMapping("/markAsPaid/{id}") 
     public ResponseEntity<ParkingTicket> markAsPaid(@PathVariable long id) {
         return paymentService.markAsPaid(id)

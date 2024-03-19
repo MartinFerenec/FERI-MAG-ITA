@@ -1,6 +1,7 @@
 package com.feri.ita.paymentservice.Services;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,26 @@ public class PaymentService {
 
         logger.info("Returning parking ticket paid status. Id: {}", id);
         return Optional.of(new ParkingTicketStatus(parkingTicket.get().getPaidTimestamp() != null));
+    }
+
+    public Optional<ParkingTicketStatus> getPrePaymentInformation(long id){
+        Optional<ParkingTicket> parkingTicket = parkingTicketRepo.findById(id);
+        if (!parkingTicket.isPresent()){
+            logger.error("Parking ticket not found. Id: {}", id);
+            return Optional.empty();
+        }
+
+        if (parkingTicket.get().getPaidTimestamp() != null)
+        {
+            logger.info("Parking ticket already paid. Id: {}", id);
+            return Optional.of(new ParkingTicketStatus(true));
+        }
+
+        long totalMinutes = ChronoUnit.MINUTES.between(parkingTicket.get().getEntryTimestamp(), LocalDateTime.now());
+        double dueAmount = totalMinutes * 0.02;
+
+        logger.info("Returning pre-payment parking ticket information. Id: {}", id);
+        return Optional.of(new ParkingTicketStatus(dueAmount));
     }
 
     public Optional<ParkingTicket> markAsPaid(long id) {
