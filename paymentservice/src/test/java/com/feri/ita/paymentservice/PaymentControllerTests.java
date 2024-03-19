@@ -6,6 +6,7 @@ import com.feri.ita.paymentservice.Models.ParkingTicket;
 import com.feri.ita.paymentservice.Models.ParkingTicketStatus;
 import com.feri.ita.paymentservice.Services.PaymentService;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +85,10 @@ public class PaymentControllerTests {
 
         mockMvc.perform(get("/isTicketPaid/1"))
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void dummyPipelineTestThatFails() throws Exception{
+        Assert.assertEquals(1, 2);
     }
 }
