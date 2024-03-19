@@ -31,6 +31,6 @@ public class PaymentController {
     public ResponseEntity<ParkingTicket> markAsPaid(@PathVariable long id) {
         return paymentService.markAsPaid(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.badRequest().build());
     }
 }

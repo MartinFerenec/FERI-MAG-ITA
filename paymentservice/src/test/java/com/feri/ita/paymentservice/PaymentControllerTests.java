@@ -92,10 +92,10 @@ public class PaymentControllerTests {
     }
 
     @Test
-    public void markAsPaid_AlreadyPaidOrParkingTicketNotFound_ReturnsNotFound() throws Exception{
+    public void markAsPaid_AlreadyPaidOrParkingTicketNotFound_ReturnsBadRequest() throws Exception{
         when(paymentService.markAsPaid(anyLong())).thenReturn(Optional.empty());
 
         mockMvc.perform(patch("/markAsPaid/1"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isBadRequest());
     }
 }
