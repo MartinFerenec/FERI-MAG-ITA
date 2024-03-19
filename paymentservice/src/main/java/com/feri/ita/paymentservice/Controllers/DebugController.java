@@ -2,7 +2,7 @@ package com.feri.ita.paymentservice.Controllers;
 
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +16,7 @@ public class DebugController {
     @Autowired
     ParkingTicketRepo parkingTicketRepo;
 
-    @GetMapping("/newDummyParkingTicket")
+    @PostMapping("/newDummyParkingTicket")
     public ParkingTicket dummyParkingTicket(){
         ParkingTicket ticket = new ParkingTicket("MB XX-XXX", LocalDateTime.now());
 
