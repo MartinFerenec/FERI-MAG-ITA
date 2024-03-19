@@ -6,23 +6,18 @@ import com.feri.ita.paymentservice.Models.ParkingTicket;
 import com.feri.ita.paymentservice.Models.ParkingTicketStatus;
 import com.feri.ita.paymentservice.Services.PaymentService;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,9 +29,6 @@ public class PaymentControllerTests {
     
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @MockBean
     private PaymentService paymentService;
@@ -84,6 +76,27 @@ public class PaymentControllerTests {
         when(paymentService.isTicketPaid(anyLong())).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/isTicketPaid/1"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void markAsPaid_NotPaidYet_ReturnsOk() throws Exception{
+        ParkingTicket parkingTicket = new ParkingTicket("MB BE698", LocalDateTime.now());
+        parkingTicket.setId(1L);
+        parkingTicket.setPaidTimestamp(LocalDateTime.now());
+
+        when(paymentService.markAsPaid(anyLong())).thenReturn(Optional.of(parkingTicket));
+
+        mockMvc.perform(patch("/markAsPaid/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.paidTimestamp", notNullValue()));
+    }
+
+    @Test
+    public void markAsPaid_AlreadyPaidOrParkingTicketNotFound_ReturnsNotFound() throws Exception{
+        when(paymentService.markAsPaid(anyLong())).thenReturn(Optional.empty());
+
+        mockMvc.perform(patch("/markAsPaid/1"))
             .andExpect(status().isNotFound());
     }
 }
