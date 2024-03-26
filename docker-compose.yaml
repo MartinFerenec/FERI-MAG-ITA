@@ -1,30 +1,45 @@
 version: '3.3'
 
 services:
-
   db:
     image: mysql:5.7
     restart: always
     environment:
       TZ: 'UTC'
       MYSQL_DATABASE: 'paymentServiceDb'
-      # So you don't have to use root, but you can if you like
       MYSQL_USER: 'user'
-      # You can use whatever password you like
       MYSQL_PASSWORD: 'hello123'
-      # Password for root access
       MYSQL_ROOT_PASSWORD: 'nekiJakiPassword-123'
     ports:
-      # <Port exposed> : <MySQL Port running inside container>
       - '3306:3306'
     expose:
-      # Opens port 3306 on the container
       - '3306'
-      # Where our data will be persisted
     volumes:
       - feri-mag-ita:/var/lib/mysql
     networks:
       - feri-mag-ita-network
+
+  paymentservice:
+    build: ./paymentservice/
+    ports: 
+      - '8080:8080'
+    expose:
+      - '8080'
+    networks:
+      - feri-mag-ita-network
+    depends_on:
+      - db
+
+  ticketmachineservice:
+    build: ./ticketmachineservice/
+    ports:
+      - '8081:8080'
+    expose:
+      - '8081'
+    networks:
+      - feri-mag-ita-network
+    depends_on:
+      - db
 
 volumes:
   feri-mag-ita:
