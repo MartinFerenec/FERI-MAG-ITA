@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
@@ -12,7 +11,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 public class ParkingTicket extends PanacheEntityBase {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "license_plate")

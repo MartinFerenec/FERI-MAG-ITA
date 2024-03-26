@@ -8,18 +8,30 @@ package TicketMachineServiceGrpc;
 
 service TicketMachineServiceGrpc {
     rpc issueTicket (TicketRequest) returns (TicketReply) {}
-    
-    rpc getTicket (IdRequest) returns (TicketReply) {}
-}
 
-message TicketRequest {
-    string name = 1;
+    rpc checkIfTicketIsPaid (IdRequest) returns (TicketPaidReply) {}
+
+    rpc setLeavingTimestamp (IdRequest) returns (SuccessReply) {}
 }
 
 message IdRequest {
     int64 id = 1;
 }
 
+message TicketRequest {
+    string licensePlate = 1;
+}
+
 message TicketReply {
-    string message = 1;
+    int64 id = 1;
+    string licensePlate = 2;
+    string entryTimestamp = 3;
+}
+
+message TicketPaidReply {
+    bool paid = 1;
+}
+
+message SuccessReply {
+    bool success = 1;
 }
