@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  db:
+  mysql:
     image: mysql:5.7
     restart: always
     environment:
@@ -21,6 +21,9 @@ services:
 
   paymentservice:
     build: ./paymentservice/
+    environment:
+      - JAKARTA_PERSISTANCE_JDBC_URL=jdbc:mysql://mysql:3306/paymentServiceDb?useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/paymentServiceDb?useSSL=false&serverTimezone=UTC
     ports: 
       - '8080:8080'
     expose:
@@ -28,10 +31,12 @@ services:
     networks:
       - feri-mag-ita-network
     depends_on:
-      - db
+      - mysql
 
   ticketmachineservice:
     build: ./ticketmachineservice/
+    environment:
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:mysql://mysql:3306/paymentServiceDb?useSSL=false&serverTimezone=UTC
     ports:
       - '8081:8080'
     expose:
@@ -39,7 +44,7 @@ services:
     networks:
       - feri-mag-ita-network
     depends_on:
-      - db
+      - mysql
 
 volumes:
   feri-mag-ita:
