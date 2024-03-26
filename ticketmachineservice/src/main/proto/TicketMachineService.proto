@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "feri.ita";
+option java_outer_classname = "TicketMachineServiceGrpcProto";
+
+package TicketMachineServiceGrpc;
+
+service TicketMachineServiceGrpc {
+    rpc issueTicket (TicketRequest) returns (TicketReply) {}
+    
+    rpc getTicket (IdRequest) returns (TicketReply) {}
+}
+
+message TicketRequest {
+    string name = 1;
+}
+
+message IdRequest {
+    int64 id = 1;
+}
+
+message TicketReply {
+    string message = 1;
+}
